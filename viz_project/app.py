@@ -1,7 +1,7 @@
 # app.py
 """
 =============================================================
-  AI Impact Dashboard — app.py  (v2 — Refactored)
+  AI Impact Dashboard — app.py 
   "Does AI Boost Grades While Undermining Real Understanding?"
   Francesco Bianchi (264692) · Hassan Faour (265917)
 =============================================================
