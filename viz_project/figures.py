@@ -4,7 +4,7 @@ import plotly.express as px
 import pandas as pd
 
 # Local imports
-from config import (TEAL, GREY, AMBER, RED, GREEN, TEXT, SUBTEXT, BG, CARD, GRIDD, 
+from config import (TEAL, GREY, AMBER, RED, GREEN, TEXT, SUBTEXT, BG, CARD, GRIDD,
                     USE_LABELS, FIELD_COL, PURP_COL, FEEL_COL, base_layout)
 from data import df1_raw, df1_users, df2, df3
 
@@ -15,12 +15,12 @@ def fig_adoption_donut():
     fig = go.Figure(go.Pie(
         labels=counts.index, values=counts.values, hole=0.60,
         marker_colors=colors, textinfo="label+percent", textfont=dict(size=12),
-        hovertemplate="<b>%{label}</b><br>%{value} studenti (%{percent})<extra></extra>",
+        hovertemplate="<b>%{label}</b><br>%{value} students (%{percent})<extra></extra>",
         sort=False,
     ))
-    fig.add_annotation(x=0.5, y=0.5, text="<b>23 218</b><br>studenti",
+    fig.add_annotation(x=0.5, y=0.5, text="<b>23 218</b><br>students",
                        showarrow=False, font=dict(size=13, color=TEXT))
-    fig.update_layout(**base_layout("ChatGPT Adoption  (Dataset 1, n=23 218, 109 paesi)"))
+    fig.update_layout(**base_layout("ChatGPT Adoption  (Dataset 1, n=23 218, 109 countries)"))
     return fig
 
 def fig_usage_intensity_bar():
@@ -32,10 +32,10 @@ def fig_usage_intensity_bar():
     fig = go.Figure(go.Bar(
         x=labels, y=pcts.values, marker_color=colors,
         text=[f"{v:.1f}%" for v in pcts.values], textposition="outside",
-        textfont=dict(color=TEXT), hovertemplate="%{x}<br>%{y:.1f}% degli utenti<extra></extra>",
+        textfont=dict(color=TEXT), hovertemplate="%{x}<br>%{y:.1f}% of users<extra></extra>",
     ))
-    fig.update_layout(**base_layout("Intensità d'uso di ChatGPT  (solo utenti, n=16 010)"))
-    fig.update_yaxes(title="% utenti ChatGPT", range=[0, 42])
+    fig.update_layout(**base_layout("ChatGPT Usage Intensity  (users only, n=16 010)"))
+    fig.update_yaxes(title="% ChatGPT users", range=[0, 42])
     fig.update_xaxes(title="")
     return fig
 
@@ -52,8 +52,8 @@ def fig_field_adoption():
         textposition="outside", textfont=dict(color=TEXT),
         hovertemplate="%{y}: %{x:.1f}% adoption<extra></extra>",
     ))
-    fig.update_layout(**base_layout("Tasso di adozione per campo di studi", height=300))
-    fig.update_xaxes(title="% studenti che usano ChatGPT", range=[0, 85])
+    fig.update_layout(**base_layout("Adoption Rate by Field of Study", height=300))
+    fig.update_xaxes(title="% students using ChatGPT", range=[0, 85])
     fig.update_yaxes(title="")
     return fig
 
@@ -71,14 +71,14 @@ def fig_paradox_lines():
         name="Perceived Grade Improvement (Q27b)", line=dict(color=TEAL, width=3),
         marker=dict(size=10, color=TEAL), text=[f"{v:.2f}" for v in grades_mean.values],
         textposition="top center", textfont=dict(color=TEAL, size=11),
-        hovertemplate="Intensità: %{x}<br>Voti percepiti: %{y:.2f}/5<extra></extra>",
+        hovertemplate="Intensity: %{x}<br>Perceived grades: %{y:.2f}/5<extra></extra>",
     ))
     fig.add_trace(go.Scatter(
         x=labels, y=crit_mean.values, mode="lines+markers+text",
         name="Perceived Critical Thinking Gain (Q29e)", line=dict(color=RED, width=3),
         marker=dict(size=10, color=RED), text=[f"{v:.2f}" for v in crit_mean.values],
         textposition="bottom center", textfont=dict(color=RED, size=11),
-        hovertemplate="Intensità: %{x}<br>Critical thinking: %{y:.2f}/5<extra></extra>",
+        hovertemplate="Intensity: %{x}<br>Critical thinking: %{y:.2f}/5<extra></extra>",
     ))
     for i, (x, g, c, gp) in enumerate(zip(labels, grades_mean, crit_mean, gap)):
         fig.add_shape(type="line", x0=x, x1=x, y0=c, y1=g,
@@ -90,16 +90,16 @@ def fig_paradox_lines():
                        showarrow=False, font=dict(color=AMBER, size=11), xanchor="right")
     fig.add_annotation(
         x="Moderately", y=4.3,
-        text="<b>Il gap si allarga con l'intensità d'uso</b><br>"
-             "Più si usa ChatGPT → più si percepisce un vantaggio sui voti<br>"
-             "ma il beneficio sul critical thinking cresce meno",
+        text="<b>The gap widens with usage intensity</b><br>"
+             "Higher ChatGPT use → stronger perceived grade benefit<br>"
+             "but the critical thinking gain grows less",
         showarrow=False, font=dict(color=AMBER, size=10),
         bgcolor=CARD, bordercolor=AMBER, borderwidth=1, borderpad=6, align="center",
     )
     fig.update_layout(**base_layout(
-        "Il Paradosso — Voti vs Critical Thinking per Intensità d'uso  (Dataset 1, n=16 010, scala 1–5)", height=480))
-    fig.update_yaxes(title="Accordo medio (1=disaccordo, 5=accordo)", range=[2.3, 4.8])
-    fig.update_xaxes(title="Intensità d'uso di ChatGPT")
+        "The Paradox — Grades vs Critical Thinking by Usage Intensity  (Dataset 1, n=16 010, scale 1–5)", height=480))
+    fig.update_yaxes(title="Mean agreement (1=disagree, 5=agree)", range=[2.3, 4.8])
+    fig.update_xaxes(title="ChatGPT Usage Intensity")
     return fig
 
 def fig_hinder_vs_grades():
@@ -115,21 +115,21 @@ def fig_hinder_vs_grades():
             x=labels, y=gap.values, mode="lines+markers", name=field,
             line=dict(color=FIELD_COL.get(field, GREY), width=2),
             marker=dict(size=8, color=FIELD_COL.get(field, GREY)),
-            hovertemplate=f"<b>{field}</b><br>Intensità: %{{x}}<br>Gap (voti−crit.think.): %{{y:.2f}}<extra></extra>",
+            hovertemplate=f"<b>{field}</b><br>Intensity: %{{x}}<br>Gap (grades−crit.think.): %{{y:.2f}}<extra></extra>",
         ))
     fig.add_hline(y=0, line_dash="dot", line_color=GREY,
-                  annotation_text="Nessun gap (voti = critical thinking)",
+                  annotation_text="No gap (grades = critical thinking)",
                   annotation_font_color=GREY, annotation_font_size=9)
-    fig.update_layout(**base_layout("Gap (Voti − Critical Thinking) per Campo di Studi × Intensità d'uso", height=420))
-    fig.update_yaxes(title="Gap percepito (Q27b − Q29e)", range=[-0.1, 0.8])
-    fig.update_xaxes(title="Intensità d'uso di ChatGPT")
+    fig.update_layout(**base_layout("Gap (Grades − Critical Thinking) by Field of Study × Usage Intensity", height=420))
+    fig.update_yaxes(title="Perceived gap (Q27b − Q29e)", range=[-0.1, 0.8])
+    fig.update_xaxes(title="ChatGPT Usage Intensity")
     return fig
 
 # ── TAB 3 ──
 def fig_purpose_heatmap():
     q18_cols   = [f"Q18{c}" for c in "abcdefghijkl"]
     q18_labels = ["Academic writing", "Professional writing", "Creative writing",
-                  "Proofreading", "Brainstorming", "Translating", "Summarizing", 
+                  "Proofreading", "Brainstorming", "Translating", "Summarizing",
                   "Calculating", "Study assistance", "Personal assistance", "Research", "Coding"]
     order = [1, 2, 3, 4, 5]
     grp   = df1_users.groupby("Q15")[q18_cols].mean().reindex(order).round(2)
@@ -137,11 +137,11 @@ def fig_purpose_heatmap():
         z=grp.values.T, x=[USE_LABELS[i] for i in order], y=q18_labels,
         colorscale=[[0.0, CARD], [0.5, "#1E6B74"], [1.0, TEAL]],
         zmin=1, zmax=4, texttemplate="%{z}", textfont=dict(color=TEXT, size=10),
-        hovertemplate="Intensità: %{x}<br>Task: %{y}<br>Media: %{z}<extra></extra>",
+        hovertemplate="Intensity: %{x}<br>Task: %{y}<br>Mean: %{z}<extra></extra>",
         colorbar=dict(title=dict(text="Freq.<br>(1–5)", font=dict(color=SUBTEXT)), tickfont=dict(color=SUBTEXT)),
     ))
-    fig.update_layout(**base_layout("Frequenza d'uso per Task × Intensità  (Dataset 1, scala 1=Never, 5=Always)", height=480))
-    fig.update_xaxes(title="Intensità d'uso generale (Q15)")
+    fig.update_layout(**base_layout("Usage Frequency by Task × Intensity  (Dataset 1, scale 1=Never, 5=Always)", height=480))
+    fig.update_xaxes(title="Overall usage intensity (Q15)")
     fig.update_yaxes(title="")
     return fig
 
@@ -162,9 +162,9 @@ def fig_dependency_paradox_bars():
             text=[f"{v:.2f}" for v in vals.values], textposition="outside",
             textfont=dict(color=TEXT, size=9), width=0.26, offset=offset,
         ))
-    fig.update_layout(**base_layout("Tre metriche chiave per Intensità d'uso  (Dataset 1, scala 1–5)", height=440), barmode="overlay")
-    fig.update_yaxes(title="Accordo medio (scala Likert 1–5)", range=[2.4, 4.7])
-    fig.update_xaxes(title="Intensità d'uso di ChatGPT")
+    fig.update_layout(**base_layout("Three Key Metrics by Usage Intensity  (Dataset 1, scale 1–5)", height=440), barmode="overlay")
+    fig.update_yaxes(title="Mean agreement (Likert scale 1–5)", range=[2.4, 4.7])
+    fig.update_xaxes(title="ChatGPT Usage Intensity")
     return fig
 
 # ── TAB 4 ──
@@ -222,7 +222,7 @@ def fig_delta_by_purpose():
 # ── TAB 5 ──
 def fig_emotions_radar():
     emo_cols = [f"Q32{c}" for c in "abcdefghijklmno"]
-    emo_labels = ["Bored", "Hopeful", "Sad", "Ashamed", "Calm", "Angry", "Relieved", "Happy", 
+    emo_labels = ["Bored", "Hopeful", "Sad", "Ashamed", "Calm", "Angry", "Relieved", "Happy",
                   "Proud", "Anxious", "Surprised", "Curious", "Excited", "Confused", "Frustrated"]
     vals = df1_users[emo_cols].mean().round(2).tolist()
     vals_c = vals + [vals[0]]
@@ -238,7 +238,7 @@ def fig_emotions_radar():
         line=dict(color=GREY, width=1, dash="dot"), name="Neutral (3.0/5)",
     ))
     fig.update_layout(
-        **base_layout("Emozioni provate usando ChatGPT  (Dataset 1, n=16 010, 1=Never 5=Always)", height=460),
+        **base_layout("Emotions While Using ChatGPT  (Dataset 1, n=16 010, 1=Never 5=Always)", height=460),
         polar=dict(
             bgcolor=CARD,
             radialaxis=dict(visible=True, range=[1, 5], gridcolor=GRIDD,
@@ -260,12 +260,12 @@ def fig_satisfaction_bars():
     fig = go.Figure(go.Bar(
         x=means, y=labels, orientation="h", marker_color=colors,
         text=[f"{v:.2f}" for v in means], textposition="outside",
-        textfont=dict(color=TEXT), hovertemplate="%{y}<br>Media: %{x:.2f}/5<extra></extra>",
+        textfont=dict(color=TEXT), hovertemplate="%{y}<br>Mean: %{x:.2f}/5<extra></extra>",
     ))
     fig.add_vline(x=3.0, line_dash="dot", line_color=AMBER, annotation_text="Neutral (3/5)",
                   annotation_font_color=AMBER, annotation_font_size=9)
-    fig.update_layout(**base_layout("Soddisfazione & Attitudine verso ChatGPT  (Dataset 1, scala 1–5)", height=380))
-    fig.update_xaxes(title="Accordo medio", range=[1, 5])
+    fig.update_layout(**base_layout("Satisfaction & Attitude Toward ChatGPT  (Dataset 1, scale 1–5)", height=380))
+    fig.update_xaxes(title="Mean agreement", range=[1, 5])
     fig.update_yaxes(title="")
     return fig
 
@@ -297,7 +297,7 @@ def fig_edu_advantages():
     fig = go.Figure(go.Bar(
         x=labels, y=vals, marker_color=colors, text=[f"{v}" for v in vals],
         textposition="outside", textfont=dict(color=TEXT), width=0.5,
-        hovertemplate="%{x}<br>Mean: %{y:.2f}<br><i>(1=strong agree, 5=disagree)</i><extra></extra>",
+        hovertemplate="%{x}<br>Mean: %{y:.2f}<br><i>(1=strongly agree, 5=disagree)</i><extra></extra>",
     ))
     fig.add_hline(y=3, line_dash="dot", line_color=AMBER, annotation_text="Neutral (3/5)",
                   annotation_font_color=AMBER, annotation_font_size=10)

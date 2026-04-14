@@ -1,5 +1,4 @@
 # config.py
-
 # ─────────────────────────────────────────────────────────────
 # PALETTE & THEME
 # ─────────────────────────────────────────────────────────────
@@ -14,7 +13,6 @@ GRIDD   = "#1E2D3D"
 TEXT    = "#F1F5F9"
 SUBTEXT = "#94A3B8"
 PURP    = "#A78BFA"
-
 FEEL_COL = {"Curiosity": TEAL, "Trust": GREEN, "Indifference": GREY, "Fear": RED}
 PURP_COL = {"Research": TEAL, "Coding": AMBER, "Homework": GREY}
 FIELD_COL = {

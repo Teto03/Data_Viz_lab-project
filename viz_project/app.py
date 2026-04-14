@@ -57,7 +57,7 @@ app.index_string = """
   <title>{%title%}</title>
   {%favicon%}
   {%css%}
-  <link href="[https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap](https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap)" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: """ + BG + """; font-family: 'DM Sans', sans-serif; color: """ + TEXT + """; }
@@ -95,7 +95,7 @@ app.layout = html.Div(
         html.Div(style={"display": "grid", "gridTemplateColumns": "repeat(4, 1fr)",
                         "gap": "16px", "marginBottom": "24px"}, children=[
             kpi_card("ChatGPT Adoption", f"{adoption_pct}%",
-                     f"of 23 218 global students  (Dataset 1)", TEAL),
+                     f"out of 23 218 global students  (Dataset 1)", TEAL),
             kpi_card("Paradox Gap (Extensive use)",
                      f"+{grade_gap_ext}",
                      f"Grades−CritThink gap (Rarely: +{grade_gap_rare})", AMBER),
@@ -112,36 +112,36 @@ app.layout = html.Div(
                     html.Div(style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "20px"}, children=[
                         section("ChatGPT Adoption — Global Picture",
                                 [dcc.Graph(figure=f.fig_adoption_donut(), config={"displayModeBar": False})],
-                                insight="69% degli studenti universitari globali ha usato ChatGPT (Dataset 1, n=23 218, 109 paesi...)."),
-                        section("Intensità d'uso tra gli utenti ChatGPT",
+                                insight="69% of global university students used ChatGPT (Dataset 1, n=23 218, 109 countries...)."),
+                        section("Usage Intensity Among ChatGPT Users",
                                 [dcc.Graph(figure=f.fig_usage_intensity_bar(), config={"displayModeBar": False})],
-                                insight="La maggioranza usa ChatGPT in modo Occasionally/Moderately..."),
+                                insight="The majority use ChatGPT Occasionally/Moderately..."),
                     ]),
-                    section("Tasso di adozione per campo di studi",
+                    section("Adoption Rate by Field of Study",
                             [dcc.Graph(figure=f.fig_field_adoption(), config={"displayModeBar": False})],
-                            insight="Applied Sciences e Social Sciences hanno i tassi di adozione più alti..."),
+                            insight="Applied Sciences and Social Sciences have the highest adoption rates..."),
                 ])
             ]),
             # TAB 2
             dcc.Tab(label="2 · The Paradox ⭐", style=TAB_STYLE, selected_style=TAB_SEL, children=[
                 html.Div(style={"paddingTop": "24px"}, children=[
-                    section("Il Paradosso — Dati Reali (n=16 010)",
+                    section("The Paradox — Real Data (n=16 010)",
                             [dcc.Graph(figure=f.fig_paradox_lines(), config={"displayModeBar": False})],
-                            insight="SEGNALE REALE (non sintetico): all'aumentare dell'intensità d'uso..."),
-                    section("Gap per Campo di Studi × Intensità d'uso",
+                            insight="REAL SIGNAL (not synthetic): as usage intensity increases..."),
+                    section("Gap by Field of Study × Usage Intensity",
                             [dcc.Graph(figure=f.fig_hinder_vs_grades(), config={"displayModeBar": False})],
-                            insight="Il paradosso è consistente tra tutti i campi di studi..."),
+                            insight="The paradox is consistent across all fields of study..."),
                 ])
             ]),
             # TAB 3
             dcc.Tab(label="3 · Dependency Lens", style=TAB_STYLE, selected_style=TAB_SEL, children=[
                 html.Div(style={"paddingTop": "24px"}, children=[
-                    section("Heatmap: Task di utilizzo × Intensità d'uso",
+                    section("Heatmap: Usage Tasks × Usage Intensity",
                             [dcc.Graph(figure=f.fig_purpose_heatmap(), config={"displayModeBar": False})],
-                            insight="Gli utenti intensivi usano ChatGPT per più task simultaneamente..."),
-                    section("Tre metriche chiave per Intensità d'uso",
+                            insight="Intensive users rely on ChatGPT for more tasks simultaneously..."),
+                    section("Three Key Metrics by Usage Intensity",
                             [dcc.Graph(figure=f.fig_dependency_paradox_bars(), config={"displayModeBar": False})],
-                            insight="Notare: la preoccupazione 'AI hinders learning' (amber) DECRESCE..."),
+                            insight="Note: the concern 'AI hinders learning' (amber) DECREASES..."),
                 ])
             ]),
             # TAB 4
@@ -149,7 +149,7 @@ app.layout = html.Div(
                 html.Div(style={"paddingTop": "24px"}, children=[
                     section("Slope Chart: Grades Before → After AI adoption",
                             [dcc.Graph(figure=f.fig_slope_chart(), config={"displayModeBar": False})],
-                            insight="Dataset 3 (semi-sintetico): tutti i 40 studenti AI migliorano..."),
+                            insight="Dataset 3 (semi-synthetic): all 40 AI students improve..."),
                     section("Grade Delta by Purpose × Education Level",
                             [dcc.Graph(figure=f.fig_delta_by_purpose(), config={"displayModeBar": False})],
                             insight="Research college (+12.0) > Coding (+10.8) > Homework (+9.0)..."),
@@ -159,20 +159,20 @@ app.layout = html.Div(
             dcc.Tab(label="5 · Perceptions", style=TAB_STYLE, selected_style=TAB_SEL, children=[
                 html.Div(style={"paddingTop": "24px"}, children=[
                     html.Div(style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "20px"}, children=[
-                        section("Emozioni usando ChatGPT  (Dataset 1, n=16 010)",
+                        section("Emotions While Using ChatGPT  (Dataset 1, n=16 010)",
                                 [dcc.Graph(figure=f.fig_emotions_radar(), config={"displayModeBar": False})],
-                                insight="Curious e Calm dominano..."),
-                        section("Soddisfazione & Attitudine  (Dataset 1)",
+                                insight="Curious and Calm dominate..."),
+                        section("Satisfaction & Attitude  (Dataset 1)",
                                 [dcc.Graph(figure=f.fig_satisfaction_bars(), config={"displayModeBar": False})],
-                                insight="'Using ChatGPT is interesting' e 'Helps in everyday life' sono i valori più alti..."),
+                                insight="'Using ChatGPT is interesting' and 'Helps in everyday life' score highest..."),
                     ]),
                     html.Div(style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "20px"}, children=[
-                        section("Sentimento verso l'AI per Anno di Studio  (Survey_AI, n=91)",
+                        section("Feeling Toward AI by Year of Study  (Survey_AI, n=91)",
                                 [dcc.Graph(figure=f.fig_feelings_stacked(), config={"displayModeBar": False})],
-                                insight="Curiosità domina..."),
-                        section("Vantaggi e Svantaggi AI nell'Educazione  (Survey_AI)",
+                                insight="Curiosity dominates..."),
+                        section("AI Advantages & Disadvantages in Education  (Survey_AI)",
                                 [dcc.Graph(figure=f.fig_edu_advantages(), config={"displayModeBar": False})],
-                                insight="Gli studenti concordano SIA con i vantaggi SIA con lo svantaggio..."),
+                                insight="Students agree BOTH with the advantages AND the disadvantage..."),
                     ]),
                 ])
             ]),
@@ -180,7 +180,7 @@ app.layout = html.Div(
         # ── FOOTER ──
         html.Div(style={"padding": "32px 0 40px", "textAlign": "center",
                         "color": SUBTEXT, "fontSize": "11px", "letterSpacing": "1px"}, children=[
-            html.Div("Dataset 1: final_dataset.xlsx — Aristovnik et al. (2024), n=23 218, 109 paesi (REALE) · Dataset 2: Survey_AI.csv (n=91, reale) · Dataset 3: students_ai_usage.csv (n=100, semi-sintetico)"),
+            html.Div("Dataset 1: final_dataset.xlsx — Aristovnik et al. (2024), n=23 218, 109 countries (REAL) · Dataset 2: Survey_AI.csv (n=91, real) · Dataset 3: students_ai_usage.csv (n=100, semi-synthetic)"),
             html.Div("Francesco Bianchi 264692 · Hassan Faour 265917 · Built with Python / Plotly Dash", style={"marginTop": "6px"}),
         ]),
     ]
