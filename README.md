@@ -52,7 +52,7 @@ cd viz_project
 To keep dependencies isolated:
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 ```
 
 Activate it depending on your OS:
@@ -80,7 +80,7 @@ pip install -r requirements.txt
 Launch the main script:
 
 ```bash
-python app.py
+python3 app.py
 ```
 
 Finally, open your browser and navigate to `http://127.0.0.1:8050` to view the dashboard!
