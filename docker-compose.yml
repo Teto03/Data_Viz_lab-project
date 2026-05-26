@@ -1,0 +1,7 @@
+services:
+  dashboard:
+    build:
+      context: ./CODE
+    ports:
+      - "8050:8050"
+    restart: unless-stopped

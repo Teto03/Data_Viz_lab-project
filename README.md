@@ -33,54 +33,63 @@ This project follows a modular structure inside the `viz_project` directory, sep
 
 ## 🚀 Setup & Run Instructions
 
-Follow these steps to set up your local environment and run the dashboard.
+There are two ways to run the dashboard: **Docker** (recommended, no Python setup needed) or **manually** with a virtual environment.
 
-### 1. Prerequisites
+---
 
-Make sure you have **Python 3** and `pip` installed on your system. 
+### Option A — Docker (Recommended)
 
-### 2. Access the Application Folder
+**Prerequisites:** [Docker](https://docs.docker.com/get-docker/) installed on your system.
 
-Open your terminal and navigate to the `viz_project` folder inside the repository:
-
-```bash
-cd viz_project
-```
-
-### 3. Create a Virtual Environment (Recommended)
-
-To keep dependencies isolated:
+From the root of the repository, run:
 
 ```bash
-python3 -m venv venv
+docker compose up --build
 ```
 
-Activate it depending on your OS:
+That's it. Open your browser at `http://localhost:8050`.
 
-- **Windows:**
-  ```bash
-  venv\Scripts\activate
-  ```
+To stop the container:
+
+```bash
+docker compose down
+```
+
+> On subsequent runs you can skip `--build` and just use `docker compose up`.
+
+---
+
+### Option B — Manual (Python)
+
+**Prerequisites:** Python 3 and `pip` installed on your system.
+
+**1. Navigate to the code folder:**
+
+```bash
+cd CODE
+```
+
+**2. Create and activate a virtual environment:**
 
 - **macOS / Linux:**
   ```bash
-  source venv/bin/activate
+  python3 -m venv venv && source venv/bin/activate
+  ```
+- **Windows:**
+  ```bash
+  python -m venv venv && venv\Scripts\activate
   ```
 
-### 4. Install Dependencies
-
-Install the required Python packages (`dash`, `pandas`, `plotly`, `statsmodels`):
+**3. Install dependencies:**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Run the Dashboard
-
-Launch the main script:
+**4. Run the dashboard:**
 
 ```bash
 python3 app.py
 ```
 
-Finally, open your browser and navigate to `http://127.0.0.1:8050` to view the dashboard!
+Open your browser at `http://127.0.0.1:8050`.
