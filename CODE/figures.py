@@ -4,7 +4,7 @@ import plotly.express as px
 import pandas as pd
 
 # Local imports
-from config import (TEAL, GREY, AMBER, RED, GREEN, TEXT, SUBTEXT, BG, CARD, GRIDD,
+from config import (TEAL, GREY, AMBER, RED, GREEN, PURP, TEXT, SUBTEXT, BG, CARD, GRIDD,
                     USE_LABELS, FIELD_COL, PURP_COL, FEEL_COL, base_layout)
 from data import df1_raw, df1_users, df2, df3
 
@@ -14,12 +14,12 @@ def fig_adoption_donut():
     colors = [TEAL if c == "Yes" else GREY for c in counts.index]
     fig = go.Figure(go.Pie(
         labels=counts.index, values=counts.values, hole=0.60,
-        marker_colors=colors, textinfo="label+percent", textfont=dict(size=12),
+        marker_colors=colors, textinfo="label+percent", textfont=dict(size=15),
         hovertemplate="<b>%{label}</b><br>%{value} students (%{percent})<extra></extra>",
         sort=False,
     ))
     fig.add_annotation(x=0.5, y=0.5, text="<b>23 218</b><br>students",
-                       showarrow=False, font=dict(size=13, color=TEXT))
+                       showarrow=False, font=dict(size=16, color=TEXT))
     fig.update_layout(**base_layout("ChatGPT Adoption  (Dataset 1, n=23 218, 109 countries)"))
     return fig
 
@@ -32,7 +32,7 @@ def fig_usage_intensity_bar():
     fig = go.Figure(go.Bar(
         x=labels, y=pcts.values, marker_color=colors,
         text=[f"{v:.1f}%" for v in pcts.values], textposition="outside",
-        textfont=dict(color=TEXT), hovertemplate="%{x}<br>%{y:.1f}% of users<extra></extra>",
+        textfont=dict(color=TEXT, size=14), hovertemplate="%{x}<br>%{y:.1f}% of users<extra></extra>",
     ))
     fig.update_layout(**base_layout("ChatGPT Usage Intensity  (users only, n=16 010)"))
     fig.update_yaxes(title="% ChatGPT users", range=[0, 42])
@@ -49,10 +49,10 @@ def fig_field_adoption():
         x=grp["AdoptionPct"], y=grp["Field"], orientation="h",
         marker_color=[FIELD_COL.get(f, GREY) for f in grp["Field"]],
         text=[f"{v:.1f}%" for v in grp["AdoptionPct"]],
-        textposition="outside", textfont=dict(color=TEXT),
+        textposition="outside", textfont=dict(color=TEXT, size=14),
         hovertemplate="%{y}: %{x:.1f}% adoption<extra></extra>",
     ))
-    fig.update_layout(**base_layout("Adoption Rate by Field of Study", height=300))
+    fig.update_layout(**base_layout("Adoption Rate by Field of Study", height=320))
     fig.update_xaxes(title="% students using ChatGPT", range=[0, 85])
     fig.update_yaxes(title="")
     return fig
@@ -69,15 +69,15 @@ def fig_paradox_lines():
     fig.add_trace(go.Scatter(
         x=labels, y=grades_mean.values, mode="lines+markers+text",
         name="Perceived Grade Improvement (Q27b)", line=dict(color=TEAL, width=3),
-        marker=dict(size=10, color=TEAL), text=[f"{v:.2f}" for v in grades_mean.values],
-        textposition="top center", textfont=dict(color=TEAL, size=11),
+        marker=dict(size=11, color=TEAL), text=[f"{v:.2f}" for v in grades_mean.values],
+        textposition="top center", textfont=dict(color=TEAL, size=14),
         hovertemplate="Intensity: %{x}<br>Perceived grades: %{y:.2f}/5<extra></extra>",
     ))
     fig.add_trace(go.Scatter(
         x=labels, y=crit_mean.values, mode="lines+markers+text",
         name="Perceived Critical Thinking Gain (Q29e)", line=dict(color=RED, width=3),
-        marker=dict(size=10, color=RED), text=[f"{v:.2f}" for v in crit_mean.values],
-        textposition="bottom center", textfont=dict(color=RED, size=11),
+        marker=dict(size=11, color=RED), text=[f"{v:.2f}" for v in crit_mean.values],
+        textposition="bottom center", textfont=dict(color=RED, size=14),
         hovertemplate="Intensity: %{x}<br>Critical thinking: %{y:.2f}/5<extra></extra>",
     ))
     for i, (x, g, c, gp) in enumerate(zip(labels, grades_mean, crit_mean, gap)):
@@ -85,16 +85,16 @@ def fig_paradox_lines():
                       line=dict(color=AMBER, width=1.5, dash="dot"))
         if i == 4:
             fig.add_annotation(x=x, y=(g + c) / 2, text=f"  Gap = {gp:.2f}",
-                               showarrow=False, font=dict(color=AMBER, size=11), xanchor="left")
+                               showarrow=False, font=dict(color=AMBER, size=13), xanchor="left")
     fig.add_annotation(x="Rarely", y=(grades_mean[1] + crit_mean[1]) / 2, text=f"Gap = {gap[1]:.2f}",
-                       showarrow=False, font=dict(color=AMBER, size=11), xanchor="right")
+                       showarrow=False, font=dict(color=AMBER, size=13), xanchor="right")
     fig.add_annotation(
         x="Moderately", y=4.3,
         text="<b>The gap widens with usage intensity</b><br>"
              "Higher ChatGPT use → stronger perceived grade benefit<br>"
              "but the critical thinking gain grows less",
-        showarrow=False, font=dict(color=AMBER, size=10),
-        bgcolor=CARD, bordercolor=AMBER, borderwidth=1, borderpad=6, align="center",
+        showarrow=False, font=dict(color=AMBER, size=13),
+        bgcolor=CARD, bordercolor=AMBER, borderwidth=1, borderpad=8, align="center",
     )
     fig.update_layout(**base_layout(
         "The Paradox — Grades vs Critical Thinking by Usage Intensity  (Dataset 1, n=16 010, scale 1–5)", height=480))
@@ -119,7 +119,7 @@ def fig_hinder_vs_grades():
         ))
     fig.add_hline(y=0, line_dash="dot", line_color=GREY,
                   annotation_text="No gap (grades = critical thinking)",
-                  annotation_font_color=GREY, annotation_font_size=9)
+                  annotation_font_color=GREY, annotation_font_size=12)
     fig.update_layout(**base_layout("Gap (Grades − Critical Thinking) by Field of Study × Usage Intensity", height=420))
     fig.update_yaxes(title="Perceived gap (Q27b − Q29e)", range=[-0.1, 0.8])
     fig.update_xaxes(title="ChatGPT Usage Intensity")
@@ -136,9 +136,10 @@ def fig_purpose_heatmap():
     fig = go.Figure(go.Heatmap(
         z=grp.values.T, x=[USE_LABELS[i] for i in order], y=q18_labels,
         colorscale=[[0.0, CARD], [0.5, "#1E6B74"], [1.0, TEAL]],
-        zmin=1, zmax=4, texttemplate="%{z}", textfont=dict(color=TEXT, size=10),
+        zmin=1, zmax=4, texttemplate="%{z}", textfont=dict(color=TEXT, size=13),
         hovertemplate="Intensity: %{x}<br>Task: %{y}<br>Mean: %{z}<extra></extra>",
-        colorbar=dict(title=dict(text="Freq.<br>(1–5)", font=dict(color=SUBTEXT)), tickfont=dict(color=SUBTEXT)),
+        colorbar=dict(title=dict(text="Freq.<br>(1–5)", font=dict(color=SUBTEXT, size=13)),
+                      tickfont=dict(color=SUBTEXT, size=12)),
     ))
     fig.update_layout(**base_layout("Usage Frequency by Task × Intensity  (Dataset 1, scale 1=Never, 5=Always)", height=480))
     fig.update_xaxes(title="Overall usage intensity (Q15)")
@@ -160,7 +161,7 @@ def fig_dependency_paradox_bars():
         fig.add_trace(go.Bar(
             name=name, x=labels, y=vals.values, marker_color=col,
             text=[f"{v:.2f}" for v in vals.values], textposition="outside",
-            textfont=dict(color=TEXT, size=9), width=0.26, offset=offset,
+            textfont=dict(color=TEXT, size=13), width=0.26, offset=offset,
         ))
     fig.update_layout(**base_layout("Three Key Metrics by Usage Intensity  (Dataset 1, scale 1–5)", height=440), barmode="overlay")
     fig.update_yaxes(title="Mean agreement (Likert scale 1–5)", range=[2.4, 4.7])
@@ -169,53 +170,127 @@ def fig_dependency_paradox_bars():
 
 # ── TAB 4 ──
 def fig_slope_chart():
+    """Dumbbell chart: mean grade Before vs After per group (clearer than slope chart)."""
     ai_d3  = df3[df3["uses_ai"] == "Yes"].copy()
     non_d3 = df3[df3["uses_ai"] == "No"].copy()
+
+    groups = []
+    groups.append({
+        "label": f"Non-Users  (n={len(non_d3)})",
+        "before": non_d3["grades_before_ai"].mean(),
+        "after":  non_d3["grades_after_ai"].mean(),
+        "color":  GREY,
+    })
+    for purpose in ["Research", "Coding", "Homework"]:
+        sub = ai_d3[ai_d3["purpose_of_ai"] == purpose]
+        if len(sub) == 0: continue
+        groups.append({
+            "label": f"AI · {purpose}  (n={len(sub)})",
+            "before": sub["grades_before_ai"].mean(),
+            "after":  sub["grades_after_ai"].mean(),
+            "color":  PURP_COL.get(purpose, TEAL),
+        })
+
     fig = go.Figure()
-    shown_non = False
-    for _, row in non_d3.iterrows():
+    for g in groups:
+        delta = g["after"] - g["before"]
+        # connector line (the dumbbell bar)
         fig.add_trace(go.Scatter(
-            x=["Before AI", "After AI"], y=[row["grades_before_ai"], row["grades_after_ai"]],
-            mode="lines", line=dict(color=GREY, width=1.2), opacity=0.25,
-            showlegend=not shown_non, name="Non-Users (Δ=0)", legendgroup="non",
-            hovertemplate="Grade: %{y}<extra>Non-User</extra>",
+            x=[g["before"], g["after"]], y=[g["label"], g["label"]],
+            mode="lines", line=dict(color=g["color"], width=6),
+            showlegend=False, hoverinfo="skip",
         ))
-        shown_non = True
-    shown = set()
-    for _, row in ai_d3.iterrows():
-        purpose = str(row.get("purpose_of_ai", "Unknown"))
-        col = PURP_COL.get(purpose, TEAL)
+        # Before marker (hollow / lighter)
         fig.add_trace(go.Scatter(
-            x=["Before AI", "After AI"], y=[row["grades_before_ai"], row["grades_after_ai"]],
-            mode="lines+markers", line=dict(color=col, width=2), marker=dict(size=6, color=col),
-            opacity=0.75, showlegend=purpose not in shown, name=f"AI – {purpose}",
-            legendgroup=purpose, hovertemplate=f"<b>{purpose}</b><br>Grade: %{{y}}<br>Δ = +{row['grade_delta']:.0f} pt<extra></extra>",
+            x=[g["before"]], y=[g["label"]], mode="markers",
+            marker=dict(color=CARD, size=18, line=dict(color=g["color"], width=3)),
+            showlegend=False,
+            hovertemplate=f"<b>{g['label']}</b><br>Before AI: %{{x:.1f}}<extra></extra>",
         ))
-        shown.add(purpose)
+        # After marker (filled)
+        fig.add_trace(go.Scatter(
+            x=[g["after"]], y=[g["label"]], mode="markers",
+            marker=dict(color=g["color"], size=20, line=dict(color=TEXT, width=1)),
+            showlegend=False,
+            hovertemplate=f"<b>{g['label']}</b><br>After AI: %{{x:.1f}}<br>Δ = {delta:+.1f} pt<extra></extra>",
+        ))
+        # Delta label
+        if abs(delta) > 0.1:
+            fig.add_annotation(
+                x=(g["before"] + g["after"]) / 2, y=g["label"],
+                text=f"<b>Δ {delta:+.1f}</b>", showarrow=False, yshift=22,
+                font=dict(color=GREEN if delta > 0 else GREY, size=14),
+            )
+        else:
+            fig.add_annotation(
+                x=g["after"], y=g["label"], text="Δ 0",
+                showarrow=False, yshift=22, xshift=4, xanchor="left",
+                font=dict(color=GREY, size=13),
+            )
+
+    avg_delta = ai_d3["grade_delta"].mean()
     fig.add_annotation(
-        x=1, y=ai_d3["grades_after_ai"].max() + 2,
-        text=f"<b>Avg Δ AI users: +{ai_d3['grade_delta'].mean():.2f} pt</b>",
-        showarrow=False, font=dict(color=GREEN, size=13),
-        bgcolor=CARD, bordercolor=GREEN, borderwidth=1, borderpad=6,
+        xref="paper", yref="paper", x=0.99, y=1.08,
+        text=f"<b>Avg Δ AI users: +{avg_delta:.2f} pt</b>",
+        showarrow=False, font=dict(color=GREEN, size=14),
+        bgcolor=CARD, bordercolor=GREEN, borderwidth=1, borderpad=8,
+        xanchor="right",
     )
-    fig.add_annotation(x=1, y=non_d3["grades_after_ai"].min() - 3, text="⚠ Non-users Δ=0 is a synthetic artifact", showarrow=False, font=dict(color=AMBER, size=9))
-    fig.update_layout(**base_layout("Slope Chart: Grades Before → After AI adoption  (Dataset 3, n=100)", height=480))
-    fig.update_xaxes(title="")
-    fig.update_yaxes(title="Grade", range=[30, 110])
+    # Inline marker legend (non-interactive — explains hollow vs filled)
+    fig.add_annotation(
+        xref="paper", yref="paper", x=0.01, y=1.08,
+        text=(f"<span style='color:{SUBTEXT}'>○ Before AI (mean)</span>"
+              f"   <span style='color:{TEXT}'>● After AI (mean)</span>"),
+        showarrow=False, font=dict(size=13, family="'DM Sans', sans-serif"),
+        xanchor="left", align="left",
+    )
+    fig.add_annotation(
+        xref="paper", yref="paper", x=0.99, y=-0.18,
+        text="⚠ Non-Users Δ=0 is a synthetic artifact of Dataset 3",
+        showarrow=False, font=dict(color=AMBER, size=12), xanchor="right",
+    )
+
+    fig.update_layout(
+        **base_layout("Average Grade Before → After AI adoption  (Dataset 3, n=100)", height=460),
+        showlegend=False,
+    )
+    fig.update_xaxes(title="Grade  (0–100)", range=[55, 95])
+    fig.update_yaxes(title="", autorange="reversed")
     return fig
 
 def fig_delta_by_purpose():
     ai_d3 = df3[df3["uses_ai"] == "Yes"].copy()
     grp = (ai_d3.groupby(["purpose_of_ai", "education_level"])["grade_delta"]
-               .mean().round(2).reset_index())
-    grp.columns = ["Purpose", "Level", "Delta"]
+               .agg(["mean", "std", "count"]).reset_index())
+    grp.columns = ["Purpose", "Level", "Delta", "Std", "N"]
+    grp["Delta"] = grp["Delta"].round(2)
+    grp["Std"]   = grp["Std"].fillna(0).round(2)
     fig = px.bar(
         grp, x="Purpose", y="Delta", color="Level", barmode="group",
-        text="Delta", color_discrete_map={"college": TEAL, "school": AMBER},
+        text="Delta", error_y="Std",
+        color_discrete_map={"college": PURP, "school": GREEN},
+        custom_data=["Std", "N"],
     )
-    fig.update_traces(textposition="outside", textfont=dict(color=TEXT))
-    fig.update_layout(**base_layout("Grade Delta by Purpose × Education Level  (AI Users only)"))
-    fig.update_yaxes(title="Avg Grade Δ", range=[0, 15])
+    fig.update_traces(
+        textposition="inside", insidetextanchor="start",
+        textfont=dict(color=TEXT, size=14, family="'DM Sans', sans-serif"),
+        error_y=dict(color=TEXT, thickness=2.5, width=14),
+        marker_line=dict(color=BG, width=0.5),
+        hovertemplate="<b>%{x}</b><br>Avg Δ: %{y:.2f}<br>SD: ±%{customdata[0]:.2f}<br>n=%{customdata[1]}<extra></extra>",
+    )
+    # Add small "±SD" labels above each error bar so SD value is readable
+    for _, row in grp.iterrows():
+        purposes = list(grp["Purpose"].unique())
+        x_idx = purposes.index(row["Purpose"])
+        offset = -0.2 if row["Level"] == "college" else 0.2
+        fig.add_annotation(
+            x=x_idx + offset, y=row["Delta"] + row["Std"],
+            text=f"±{row['Std']:.1f}", showarrow=False, yshift=12,
+            font=dict(color=SUBTEXT, size=11),
+        )
+    y_max = float((grp["Delta"] + grp["Std"]).max()) + 4
+    fig.update_layout(**base_layout("Grade Delta by Purpose × Education Level  (AI Users only — mean ± SD)"))
+    fig.update_yaxes(title="Avg Grade Δ  (± SD)", range=[0, y_max])
     fig.update_xaxes(title="")
     return fig
 
@@ -238,12 +313,12 @@ def fig_emotions_radar():
         line=dict(color=GREY, width=1, dash="dot"), name="Neutral (3.0/5)",
     ))
     fig.update_layout(
-        **base_layout("Emotions While Using ChatGPT  (Dataset 1, n=16 010, 1=Never 5=Always)", height=460),
+        **base_layout("Emotions While Using ChatGPT  (Dataset 1, n=16 010, 1=Never 5=Always)", height=480),
         polar=dict(
             bgcolor=CARD,
             radialaxis=dict(visible=True, range=[1, 5], gridcolor=GRIDD,
-                            tickfont=dict(color=SUBTEXT), tickvals=[1, 2, 3, 4, 5]),
-            angularaxis=dict(gridcolor=GRIDD, tickfont=dict(color=TEXT, size=9)),
+                            tickfont=dict(color=SUBTEXT, size=12), tickvals=[1, 2, 3, 4, 5]),
+            angularaxis=dict(gridcolor=GRIDD, tickfont=dict(color=TEXT, size=12)),
         ),
     )
     return fig
@@ -256,15 +331,15 @@ def fig_satisfaction_bars():
     vals   = {k: df1_users[k].mean().round(2) for k in items}
     labels = list(items.values())
     means  = list(vals.values())
-    colors = [TEAL if v >= 3.0 else RED for v in means]
+    colors = [PURP if v >= 3.0 else GREY for v in means]
     fig = go.Figure(go.Bar(
         x=means, y=labels, orientation="h", marker_color=colors,
         text=[f"{v:.2f}" for v in means], textposition="outside",
-        textfont=dict(color=TEXT), hovertemplate="%{y}<br>Mean: %{x:.2f}/5<extra></extra>",
+        textfont=dict(color=TEXT, size=14), hovertemplate="%{y}<br>Mean: %{x:.2f}/5<extra></extra>",
     ))
     fig.add_vline(x=3.0, line_dash="dot", line_color=AMBER, annotation_text="Neutral (3/5)",
-                  annotation_font_color=AMBER, annotation_font_size=9)
-    fig.update_layout(**base_layout("Satisfaction & Attitude Toward ChatGPT  (Dataset 1, scale 1–5)", height=380))
+                  annotation_font_color=AMBER, annotation_font_size=12)
+    fig.update_layout(**base_layout("Satisfaction & Attitude Toward ChatGPT  (Dataset 1, scale 1–5)", height=420))
     fig.update_xaxes(title="Mean agreement", range=[1, 5])
     fig.update_yaxes(title="")
     return fig
@@ -280,7 +355,7 @@ def fig_feelings_stacked():
         fig.add_trace(go.Bar(
             name=feel, x=[f"Year {y}" for y in vals.index], y=vals.values,
             marker_color=FEEL_COL.get(feel, GREY), text=[f"{v:.0f}%" for v in vals.values],
-            textposition="inside", textfont=dict(color=BG, size=11),
+            textposition="inside", textfont=dict(color=BG, size=14),
         ))
     fig.update_layout(**base_layout("Feeling Toward AI by Year of Study  (Survey_AI, n=91)"), barmode="stack")
     fig.update_yaxes(title="% students", range=[0, 105])
@@ -293,14 +368,14 @@ def fig_edu_advantages():
     cols   = ["Q8.Advantage_teaching", "Q9.Advantage_learning",
               "Q10.Advantage_evaluation", "Q11.Disadvantage_educational_process"]
     vals   = [round(df2[c].mean(), 2) for c in cols]
-    colors = [TEAL, TEAL, TEAL, RED]
+    colors = [GREEN, GREEN, GREEN, AMBER]
     fig = go.Figure(go.Bar(
         x=labels, y=vals, marker_color=colors, text=[f"{v}" for v in vals],
-        textposition="outside", textfont=dict(color=TEXT), width=0.5,
+        textposition="outside", textfont=dict(color=TEXT, size=14), width=0.5,
         hovertemplate="%{x}<br>Mean: %{y:.2f}<br><i>(1=strongly agree, 5=disagree)</i><extra></extra>",
     ))
     fig.add_hline(y=3, line_dash="dot", line_color=AMBER, annotation_text="Neutral (3/5)",
-                  annotation_font_color=AMBER, annotation_font_size=10)
+                  annotation_font_color=AMBER, annotation_font_size=12)
     fig.update_layout(**base_layout("AI in Education — Advantages & Disadvantages  (Survey_AI, n=91 — 1=agree, 5=disagree)"))
     fig.update_yaxes(title="Mean score", range=[0, 4])
     fig.update_xaxes(title="")

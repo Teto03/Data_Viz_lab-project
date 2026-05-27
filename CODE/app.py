@@ -33,13 +33,13 @@ PANEL = {"background": CARD, "borderRadius": "12px", "padding": "24px", "marginB
 
 def section(title, children, insight=None):
     inner = [html.H3(title, style={"color": TEXT, "fontWeight": "600",
-                                   "marginBottom": "16px", "fontSize": "15px"})]
+                                   "marginBottom": "16px", "fontSize": "17px"})]
     if insight:
         inner.append(html.Div(insight, style={
             "background": "rgba(251,191,36,0.08)",
             "borderLeft": f"3px solid {AMBER}",
-            "padding": "10px 14px", "borderRadius": "4px",
-            "fontSize": "12px", "color": SUBTEXT,
+            "padding": "12px 16px", "borderRadius": "4px",
+            "fontSize": "14px", "color": SUBTEXT,
             "marginBottom": "16px", "lineHeight": "1.6",
         }))
     inner += children
