@@ -1,15 +1,20 @@
-# 🏗️ Refactoring Guide: AI Impact Dashboard
+# Architecture — AI Impact Dashboard
 
-This guide explains how to split the monolithic `app.py` file into 4 distinct modules. The goal is to separate the visual configuration, data processing logic, chart generation, and the User Interface (UI) following the **Separation of Concerns (SoC)** principle.
+The project follows a modular structure based on the **Separation of Concerns** principle, split across four files:
 
-## Directory Structure
-Once finished, your project folder will look like this:
 ```text
-/project_folder
- ├── config.py      # Colors, themes, and base layout
+CODE/
+ ├── config.py      # Colors, theme constants, and base Plotly layout
  ├── data.py        # Data ingestion, cleaning, and KPI calculations
- ├── figures.py     # Plotly chart generation
- ├── app.py         # Dash initialization and UI layout
- ├── final_dataset.xlsx
- ├── Survey_AI.csv
- └── students_ai_usage.csv
+ ├── figures.py     # Plotly chart generation (one function per chart)
+ └── app.py         # Dash initialization, UI layout, and entry point
+```
+
+## Module responsibilities
+
+| File | Responsibility |
+|------|---------------|
+| `config.py` | Palette constants (`BG`, `TEAL`, `AMBER`, …), field/feeling/purpose color maps, `USE_LABELS`, `base_layout()` helper |
+| `data.py` | Loads all three datasets, builds derived columns, filters ChatGPT users, computes KPI scalars exported to `app.py` |
+| `figures.py` | One function per chart; imports constants from `config` and DataFrames from `data`; returns a `go.Figure` |
+| `app.py` | Defines `kpi_card()` / `section()` helpers, assembles the five-tab Dash layout, starts the server |

@@ -1,7 +1,4 @@
-# config.py
-# ─────────────────────────────────────────────────────────────
-# PALETTE & THEME
-# ─────────────────────────────────────────────────────────────
+# config.py - colors, theme constants, and base chart layout
 BG      = "#0D1B2A"
 CARD    = "#132338"
 TEAL    = "#2DD4BF"

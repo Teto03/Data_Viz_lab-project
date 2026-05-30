@@ -19,7 +19,7 @@ This dashboard visualizes the "Paradox Gap"—the phenomenon where increased AI 
 
 ## 🏗️ Architecture
 
-This project follows a modular structure inside the `viz_project` directory, separated into four main components for better maintainability (Separation of Concerns):
+This project follows a modular structure inside the `CODE` directory, separated into four main components for better maintainability (Separation of Concerns):
 - **`config.py`**: Visual configurations, themes, colors, and base layout styles.
 - **`data.py`**: Data ingestion, cleaning, and KPI calculations.
 - **`figures.py`**: Plotly chart generation.

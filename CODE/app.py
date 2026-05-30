@@ -1,22 +1,13 @@
-# app.py
-"""
-=============================================================
-  AI Impact Dashboard — app.py 
-  "Does AI Boost Grades While Undermining Real Understanding?"
-  Francesco Bianchi (264692) · Hassan Faour (265917)
-=============================================================
-"""
+# app.py - Francesco Bianchi (264692), Hassan Faour (265917)
+# main layout of the dashboard
 import dash
 from dash import dcc, html
 
-# Local imports
 from config import BG, CARD, TEAL, AMBER, RED, GREEN, GREY, TEXT, SUBTEXT
 from data import adoption_pct, grade_gap_ext, grade_gap_rare, delta_ai, survey_utility
 import figures as f
 
-# ─────────────────────────────────────────────────────────────
-# UI HELPERS
-# ─────────────────────────────────────────────────────────────
+# helper functions for the layout
 def kpi_card(label, value, sub="", color=TEAL):
     return html.Div(style={
         "background": CARD, "borderRadius": "12px", "padding": "20px 24px",
@@ -45,9 +36,7 @@ def section(title, children, insight=None):
     inner += children
     return html.Div(inner, style=PANEL)
 
-# ─────────────────────────────────────────────────────────────
-# DASH INIT & LAYOUT
-# ─────────────────────────────────────────────────────────────
+# app setup and layout
 app = dash.Dash(__name__, title="AI & Learning — The Paradox")
 app.index_string = """
 <!DOCTYPE html>
@@ -80,7 +69,7 @@ TAB_SEL    = {**TAB_STYLE, "color": TEAL,
 app.layout = html.Div(
     style={"maxWidth": "1400px", "margin": "0 auto", "padding": "0 24px"},
     children=[
-        # ── HEADER ──
+        # header
         html.Div(style={"padding": "36px 0 20px"}, children=[
             html.Div("DATA VISUALIZATION PROJECT · Bianchi & Faour", style={
                 "color": SUBTEXT, "fontSize": "11px", "letterSpacing": "2px",
@@ -91,7 +80,7 @@ app.layout = html.Div(
             html.Div("The Paradox of Artificial Performance",
                      style={"color": TEAL, "fontSize": "14px", "fontWeight": "500"}),
         ]),
-        # ── KPI CARDS ──
+        # kpi cards at the top
         html.Div(style={"display": "grid", "gridTemplateColumns": "repeat(4, 1fr)",
                         "gap": "16px", "marginBottom": "24px"}, children=[
             kpi_card("ChatGPT Adoption", f"{adoption_pct}%",
@@ -104,7 +93,7 @@ app.layout = html.Div(
             kpi_card("Perceived AI Utility", f"{survey_utility}/10",
                      "median 8.0 · n=91  (Survey_AI)", RED),
         ]),
-        # ── TABS ──
+        # tabs
         dcc.Tabs(style=TABS_STYLE, children=[
             # TAB 1
             dcc.Tab(label="1 · Overview", style=TAB_STYLE, selected_style=TAB_SEL, children=[
@@ -177,7 +166,7 @@ app.layout = html.Div(
                 ])
             ]),
         ]),
-        # ── FOOTER ──
+        # footer
         html.Div(style={"padding": "32px 0 40px", "textAlign": "center",
                         "color": SUBTEXT, "fontSize": "11px", "letterSpacing": "1px"}, children=[
             html.Div("Dataset 1: final_dataset.xlsx — Aristovnik et al. (2024), n=23 218, 109 countries (REAL) · Dataset 2: Survey_AI.csv (n=91, real) · Dataset 3: students_ai_usage.csv (n=100, semi-synthetic)"),
@@ -187,4 +176,4 @@ app.layout = html.Div(
 )
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8050)
+    app.run(debug=False, host="0.0.0.0", port=8050)

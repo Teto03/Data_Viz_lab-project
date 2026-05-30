@@ -1,14 +1,13 @@
-# figures.py
+# figures.py - one function per chart, all return a plotly Figure
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
 
-# Local imports
 from config import (TEAL, GREY, AMBER, RED, GREEN, PURP, TEXT, SUBTEXT, BG, CARD, GRIDD,
                     USE_LABELS, FIELD_COL, PURP_COL, FEEL_COL, base_layout)
 from data import df1_raw, df1_users, df2, df3
 
-# ── TAB 1 ──
+# tab 1 - overview
 def fig_adoption_donut():
     counts = df1_raw["used_chatgpt"].value_counts()
     colors = [TEAL if c == "Yes" else GREY for c in counts.index]
@@ -57,7 +56,7 @@ def fig_field_adoption():
     fig.update_yaxes(title="")
     return fig
 
-# ── TAB 2 ──
+# tab 2 - paradox
 def fig_paradox_lines():
     order  = [1, 2, 3, 4, 5]
     labels = [USE_LABELS[i] for i in order]
@@ -125,7 +124,7 @@ def fig_hinder_vs_grades():
     fig.update_xaxes(title="ChatGPT Usage Intensity")
     return fig
 
-# ── TAB 3 ──
+# tab 3 - dependency
 def fig_purpose_heatmap():
     q18_cols   = [f"Q18{c}" for c in "abcdefghijkl"]
     q18_labels = ["Academic writing", "Professional writing", "Creative writing",
@@ -168,9 +167,9 @@ def fig_dependency_paradox_bars():
     fig.update_xaxes(title="ChatGPT Usage Intensity")
     return fig
 
-# ── TAB 4 ──
+# tab 4 - grade delta
 def fig_slope_chart():
-    """Dumbbell chart: mean grade Before vs After per group (clearer than slope chart)."""
+    """Slope / dumbbell chart: mean grade Before vs After per group."""
     ai_d3  = df3[df3["uses_ai"] == "Yes"].copy()
     non_d3 = df3[df3["uses_ai"] == "No"].copy()
 
@@ -194,27 +193,27 @@ def fig_slope_chart():
     fig = go.Figure()
     for g in groups:
         delta = g["after"] - g["before"]
-        # connector line (the dumbbell bar)
+        # connecting bar between before and after
         fig.add_trace(go.Scatter(
             x=[g["before"], g["after"]], y=[g["label"], g["label"]],
             mode="lines", line=dict(color=g["color"], width=6),
             showlegend=False, hoverinfo="skip",
         ))
-        # Before marker (hollow / lighter)
+        # hollow circle = before
         fig.add_trace(go.Scatter(
             x=[g["before"]], y=[g["label"]], mode="markers",
             marker=dict(color=CARD, size=18, line=dict(color=g["color"], width=3)),
             showlegend=False,
             hovertemplate=f"<b>{g['label']}</b><br>Before AI: %{{x:.1f}}<extra></extra>",
         ))
-        # After marker (filled)
+        # filled circle = after
         fig.add_trace(go.Scatter(
             x=[g["after"]], y=[g["label"]], mode="markers",
             marker=dict(color=g["color"], size=20, line=dict(color=TEXT, width=1)),
             showlegend=False,
             hovertemplate=f"<b>{g['label']}</b><br>After AI: %{{x:.1f}}<br>Δ = {delta:+.1f} pt<extra></extra>",
         ))
-        # Delta label
+        # delta label above the bar
         if abs(delta) > 0.1:
             fig.add_annotation(
                 x=(g["before"] + g["after"]) / 2, y=g["label"],
@@ -236,7 +235,7 @@ def fig_slope_chart():
         bgcolor=CARD, bordercolor=GREEN, borderwidth=1, borderpad=8,
         xanchor="right",
     )
-    # Inline marker legend (non-interactive — explains hollow vs filled)
+    # small legend above the chart to explain hollow vs filled
     fig.add_annotation(
         xref="paper", yref="paper", x=0.01, y=1.08,
         text=(f"<span style='color:{SUBTEXT}'>○ Before AI (mean)</span>"
@@ -278,7 +277,7 @@ def fig_delta_by_purpose():
         marker_line=dict(color=BG, width=0.5),
         hovertemplate="<b>%{x}</b><br>Avg Δ: %{y:.2f}<br>SD: ±%{customdata[0]:.2f}<br>n=%{customdata[1]}<extra></extra>",
     )
-    # Add small "±SD" labels above each error bar so SD value is readable
+    # add the sd value above each error bar
     for _, row in grp.iterrows():
         purposes = list(grp["Purpose"].unique())
         x_idx = purposes.index(row["Purpose"])
@@ -294,7 +293,7 @@ def fig_delta_by_purpose():
     fig.update_xaxes(title="")
     return fig
 
-# ── TAB 5 ──
+# tab 5 - perceptions
 def fig_emotions_radar():
     emo_cols = [f"Q32{c}" for c in "abcdefghijklmno"]
     emo_labels = ["Bored", "Hopeful", "Sad", "Ashamed", "Calm", "Angry", "Relieved", "Happy",
