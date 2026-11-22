@@ -1,0 +1,11 @@
+Data_Viz_lab-project
+Copyright 2025-2026 Francesco Bianchi and contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Third-party data
+----------------
+The "Global Survey" dataset (final_dataset.xlsx) comes from Aristovnik et al.
+(2024) and is not covered by the license of this repository: it remains subject
+to the terms set by its original authors. Please cite the original publication
+when reusing it.
